@@ -11,11 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        board:
-          - arduino:avr:uno
-          - arduino:avr:mega
-          - arduino:avr:nano
-          - esp32:esp32:esp32
+        include:
+          - board: arduino:avr:uno
+            id: uno
+          - board: arduino:avr:mega
+            id: mega
+          - board: arduino:avr:nano
+            id: nano
+          - board: esp32:esp32:esp32
+            id: esp32
+          
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -33,9 +38,9 @@ jobs:
       - name: Compile Blink
         run: |
           arduino-cli compile --fqbn ${{ matrix.board }} Blink --output-dir build/${{ matrix.board }}
-
+          
       - name: Upload compiled binaries
         uses: actions/upload-artifact@v4
         with:
-          name: blink-${{ matrix.board }}
+          name: blink-${{ matrix.id }}
           path: build/${{ matrix.board }}
