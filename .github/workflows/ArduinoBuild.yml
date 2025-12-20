@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  demo3:
+  ArduinoBuild:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,4 +31,4 @@ jobs:
       # Compile your sketch
       - name: Compile Sketch
         run: |
-          arduino-cli compile --fqbn arduino:avr:uno path/to/your/sketch          
+          arduino-cli compile --fqbn arduino:avr:uno Blink      
