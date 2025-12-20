@@ -31,4 +31,11 @@ jobs:
       # Compile your sketch
       - name: Compile Sketch
         run: |
-          arduino-cli compile --fqbn arduino:avr:uno Blink      
+          arduino-cli compile --fqbn arduino:avr:uno Blink --output-dir build
+
+      - name: Upload compiled binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: arduino-binaries
+          path: build
+   
