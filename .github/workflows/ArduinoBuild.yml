@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  demo3:
+  ArduinoBuild:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,7 @@ jobs:
       - name: Install Arduino CLI
         run: |
           curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
-          echo "$HOME/bin" >> $GITHUB_PATH
+          echo "/home/runner/work/basic_git_test/basic_git_test/bin" >> $GITHUB_PATH
 
       # Configure Arduino CLI
       - name: Configure Arduino CLI
@@ -31,4 +31,4 @@ jobs:
       # Compile your sketch
       - name: Compile Sketch
         run: |
-          arduino-cli compile --fqbn arduino:avr:uno path/to/your/sketch          
+          arduino-cli compile --fqbn arduino:avr:uno Blink      
