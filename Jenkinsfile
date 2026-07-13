@@ -19,6 +19,13 @@ pipeline {
             }
         }
 
+        stage('Memory Check') {
+            steps {
+                // Build firmware using PlatformIO from Jenkins venv
+                sh '/var/lib/jenkins/pio-venv/bin/pio boards esp32doit-devkit-v1'
+            }
+        }
+
         stage('Upload') {
             steps {
                 // Upload firmware to ESP32 board
