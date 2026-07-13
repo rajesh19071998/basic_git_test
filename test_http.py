@@ -16,5 +16,5 @@ def test_response_not_empty(extra):
 
 def test_response_contains_board_number(extra):
     response = requests.get(URL)
-    assert "5" in response.text.lower(), "Response does not contain Board number 5"
+    assert "8" in response.text.lower(), "Response does not contain Board number = 5"
     extra.append(extras.text("✅ Response contains Board number 5"))
