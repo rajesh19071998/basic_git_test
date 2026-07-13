@@ -13,19 +13,9 @@ pipeline {
         }
 
         stage('Build') {
-            parallel {
-                stage('esp32dev') {
-                    steps {
-                        // Build firmware for ESP32 (esp32dev environment)
-                        sh '/var/lib/jenkins/pio-venv/bin/pio run -e esp32dev'
-                    }
-                }
-                stage('nodemcu') {
-                    steps {
-                        // Build firmware for NodeMCU (nodemcu environment)
-                        sh '/var/lib/jenkins/pio-venv/bin/pio run -e nodemcu'
-                    }
-                }
+            steps {
+                // Build firmware using PlatformIO from Jenkins venv
+                sh '/var/lib/jenkins/pio-venv/bin/pio run -e esp32dev'
             }
         }
 
@@ -36,11 +26,26 @@ pipeline {
                 echo 'Upload code to board'
             }
         }
-        
+
+        stage('Install dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
+        }
+        stage('Run tests') {
+            steps {
+                sh 'pytest --junitxml=results.xml'
+            }
+        }
+        stage('Publish Report') {
+            steps {
+                junit 'results.xml'
+            }
+        }
+
         stage('Archive Firmware') {
             steps {
-                // Archive binaries for both build environments
-                archiveArtifacts artifacts: ".pio/build/esp32dev/*.bin, .pio/build/nodemcu/*.bin", fingerprint: true
+                archiveArtifacts artifacts: ".pio/build/esp32dev/*.bin", fingerprint: true
             }
         }
 
@@ -48,6 +53,7 @@ pipeline {
             steps {
                 echo '🧹 Cleaning up cloned repo...'
                 // Delete the cloned repo
+                sh 'rm -rf ${WORKSPACE}/basic_git_test'
                 //sh 'rm -rf ${WORKSPACE}/basic_git_test'
                 sh 'rm -rf ${WORKSPACE}'
             }
