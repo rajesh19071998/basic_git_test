@@ -4,6 +4,23 @@ from pytest_html import extras   # ✅ import extras here too
 
 URL = "http://sw1.rajeshv.in/info"
 
+def test_board_info(extra):
+    # Run PlatformIO CLI command
+    result = subprocess.run(
+        ["pio", "boards", "esp32doit-devkit-v1"],
+        capture_output=True,
+        text=True
+    )
+
+    # Ensure command succeeded
+    assert result.returncode == 0, "❌ pio boards command failed"
+
+    # ✅ Attach CLI output to HTML report (collapsible)
+    extra.append(extras.html(
+        "<details><summary>ESP32 DevKit v1 Board Info</summary>"
+        f"<pre>{result.stdout}</pre></details>"
+    ))
+
 def test_status_code(extra):
     response = requests.get(URL)
     assert response.status_code == 200, f"❌ Expected 200, got {response.status_code}"
