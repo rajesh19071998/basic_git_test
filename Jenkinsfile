@@ -27,14 +27,21 @@ pipeline {
             }
         }
 
-        stage('Install dependencies') {
-            steps {
-                sh 'pip install -r requirements.txt'
+        steps {
+                sh '''
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                '''
             }
         }
         stage('Run tests') {
             steps {
-                sh 'pytest --junitxml=results.xml'
+                sh '''
+                . venv/bin/activate
+                pytest --junitxml=results.xml
+                '''
             }
         }
         stage('Publish Report') {
