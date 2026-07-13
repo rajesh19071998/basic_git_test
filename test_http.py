@@ -14,6 +14,12 @@ def test_response_not_empty(extra):
     assert response.text.strip() != "", "Response body is empty"
     extra.append(extras.text("✅ Response body is not empty"))
 
+def test_response_board_num_match(extra):
+    response = requests.get(URL)
+    assert "8" in response.text, "❌ Response board number not 8"
+    extra.append(extras.text("✅ Response body board number was 8"))
+
+
 def test_response_contains_board_number(extra):
     response = requests.get(URL)
     assert "8" in response.text.lower(), "Response does not contain Board number = 5"
