@@ -1,3 +1,4 @@
+import subprocess
 import requests
 import pytest
 from pytest_html import extras   # ✅ import extras here too
