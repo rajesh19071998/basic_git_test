@@ -2,7 +2,7 @@ import requests
 
 url = "http://sw1.rajeshv.in/info"
 # Example: HTTP GET request (text response)
-def http_get_example():
+def test_http_get_example():
     #url = "https://httpbin.org/get"
     response = requests.get(url)
     
@@ -19,7 +19,7 @@ def http_get_example():
 
 
 if __name__ == "__main__":
-    http_get_example()
+    test_http_get_example()
 
 
 
