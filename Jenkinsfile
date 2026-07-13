@@ -13,9 +13,19 @@ pipeline {
         }
 
         stage('Build') {
-            steps {
-                // Build firmware using PlatformIO from Jenkins venv
-                sh '/var/lib/jenkins/pio-venv/bin/pio run -e esp32dev'
+            parallel {
+                stage('esp32dev') {
+                    steps {
+                        // Build firmware for ESP32 (esp32dev environment)
+                        sh '/var/lib/jenkins/pio-venv/bin/pio run -e esp32dev'
+                    }
+                }
+                stage('nodemcu') {
+                    steps {
+                        // Build firmware for NodeMCU (nodemcu environment)
+                        sh '/var/lib/jenkins/pio-venv/bin/pio run -e nodemcu'
+                    }
+                }
             }
         }
 
@@ -29,7 +39,8 @@ pipeline {
         
         stage('Archive Firmware') {
             steps {
-                archiveArtifacts artifacts: ".pio/build/esp32dev/*.bin", fingerprint: true
+                // Archive binaries for both build environments
+                archiveArtifacts artifacts: ".pio/build/esp32dev/*.bin, .pio/build/nodemcu/*.bin", fingerprint: true
             }
         }
 
