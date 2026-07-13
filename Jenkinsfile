@@ -39,10 +39,17 @@ pipeline {
         }
         stage('Run tests') {
             steps {
-                sh '''
-                . venv/bin/activate
-                pytest --junitxml=results.xml --html=report.html --self-contained-html
-                '''
+                script {
+                    // Run pytest but capture exit code so pipeline doesn't abort on failures
+                    def rc = sh(returnStatus: true, script: '''
+                    . venv/bin/activate
+                    pytest --junitxml=results.xml --html=report.html --self-contained-html
+                    ''')
+                    if (rc != 0) {
+                        echo "Tests exited with status ${rc} — marking build UNSTABLE but continuing to Publish Report"
+                        currentBuild.result = 'UNSTABLE'
+                    }
+                }
             }
         }
         stage('Publish Report') {
