@@ -1,38 +1,17 @@
 import requests
 
-url = "http://sw1.rajeshv.in/info"
-# Example: HTTP GET request (text response)
 def test_http_get_example():
-    #url = "https://httpbin.org/get"
+    url = "http://sw1.rajeshv.in/info"
     response = requests.get(url)
-    
-    # Assert that the request succeeds
-    assert response.status_code == 200
-    # Optionally check response contains expected text
-    assert "info" in response.text.lower()
 
-    if response.status_code == 200:
-        print("GET Response (text):")
-        print(response.text)   # raw text output
-    else:
-        print(f"GET request failed with status code {response.status_code}")
+    # Check 1: Status code must be 200
+    assert response.status_code == 200, f"❌ Expected 200, got {response.status_code}"
 
+    # Check 2: Response must not be empty
+    assert response.text.strip() != "", "❌ Response body is empty"
+
+    # Check 3: Response must contain keyword 'info'
+    assert "5" in response.text.lower(), "❌ Response does not contain Board number 5'"
 
 if __name__ == "__main__":
     test_http_get_example()
-
-
-
-
-
-
-url = "http://sw1.rajeshv.in/info"
-
-def test_http_get_example():
-    response = requests.get(url)
-    # Assert that the request succeeds
-    assert response.status_code == 200
-    # Optionally check response contains expected text
-    assert "info" in response.text.lower()
-
-
