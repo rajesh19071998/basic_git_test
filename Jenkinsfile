@@ -37,7 +37,8 @@ pipeline {
             steps {
                 echo '🧹 Cleaning up cloned repo...'
                 // Delete the cloned repo
-                sh 'rm -rf ${WORKSPACE}/basic_git_test'
+                //sh 'rm -rf ${WORKSPACE}/basic_git_test'
+                sh 'rm -rf ${WORKSPACE}'
             }
         }
     }
