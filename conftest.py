@@ -1,5 +1,4 @@
 import pytest
-from py.xml import html
 
 def pytest_configure(config):
     config._metadata['Project'] = 'HTTP Test'
@@ -10,12 +9,11 @@ def pytest_html_report_title(report):
 
 def pytest_html_results_table_row(report, cells):
     if report.passed:
-        cells.insert(1, html.td('✅ PASSED', class_='passed'))
+        cells.insert(1, "✅ PASSED")
     elif report.failed:
-        cells.insert(1, html.td('❌ FAILED', class_='failed'))
+        cells.insert(1, "❌ FAILED")
 
 def pytest_html_results_table_html(report, data):
-    # Attach extras (like logs or response bodies) if present
     if hasattr(report, 'extra'):
         data.extend(report.extra)
 
