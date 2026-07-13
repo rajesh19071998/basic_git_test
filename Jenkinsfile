@@ -32,6 +32,14 @@ pipeline {
                 archiveArtifacts artifacts: ".pio/build/esp32dev/*.bin", fingerprint: true
             }
         }
+
+        stage('Cleanup') {
+            steps {
+                echo '🧹 Cleaning up cloned repo...'
+                // Delete the cloned repo
+                sh 'rm -rf ${WORKSPACE}/basic_git_test'
+            }
+        }
     }
 
     post {
