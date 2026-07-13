@@ -41,13 +41,27 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                pytest --junitxml=results.xml
+                pytest --junitxml=results.xml --html=report.html --self-contained-html
                 '''
             }
         }
         stage('Publish Report') {
             steps {
+                 // JUnit XML for Jenkins test results
                 junit 'results.xml'
+
+                // Archive HTML report for download
+                archiveArtifacts artifacts: 'report.html', fingerprint: true
+
+                // Publish HTML report inline
+                publishHTML([
+                    reportDir: '.',
+                    reportFiles: 'report.html',
+                    reportName: 'Pytest Report',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
             }
         }
 
